@@ -65,7 +65,7 @@ console.log(`${e} ${f}`);
 
 let word = "Abdul Aziz ";
 
-// Method dan Properties
+// METHOD DAN PROPERTIES
 //properties adalah tempat menyimpan data tapi dalam sebuah object
 console.log(word.length); // Output akan 11
 
