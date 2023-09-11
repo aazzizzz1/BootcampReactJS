@@ -5,7 +5,7 @@ for(index = 1; index < 10; index++){
 }
 
 //looping jumlah
-var jumlah = 0;
+let jumlah = 0;
 
 for(index = 1; index<10; index++){
     jumlah += index;
@@ -32,7 +32,7 @@ for(index=1; index<20; index++){
 }
 
 // looping while
-var index = 1;
+let index = 1;
 while (index < 10) {
     console.log("tampilkan angka:", index);
     index++;
@@ -44,7 +44,7 @@ while (index < 30) {
     index++
 } console.log("jumlah terakhir:", jumlah);
 
-var coba=0;
+let coba=0;
 
 while(coba < 10){
     if (coba % 2 == 0) {
@@ -57,8 +57,8 @@ while(coba < 10){
 
 //ARRAY 
 // properties atau atribut dari array length
-var arr =["makan", "mandi", "tidur", "minum"];
-var arrnumbers=[1,2,3,4,5,6,7,8,9,10];
+let arr =["makan", "mandi", "tidur", "minum"];
+let arrnumbers=[1,2,3,4,5,6,7,8,9,10];
 
 console.log(arr);
 console.log(arr[0]);
@@ -82,10 +82,10 @@ console.log(arr);
 arr.sort((a, b) => (a - b)); //mengurutkan data array default secara ascending rendah ke tinggi(naik) (A-Z), kebalikan dari descending menurun (turun)
 console.log(arr); 
 
-var potongan = arr.slice(1,3); //harus ditampung di variable baru, mengambil data array dari index 1 sampai 3 tidak mengikutkan yang trakhir
+let potongan = arr.slice(1,3); //harus ditampung di variable baru, mengambil data array dari index 1 sampai 3 tidak mengikutkan yang trakhir
 console.log(potongan);
 
-var potonganangka = arrnumbers.slice(1,3); //mengambil data array dari index 1 sampai 3 tidak mengikutkan yang trakhir
+let potonganangka = arrnumbers.slice(1,3); //mengambil data array dari index 1 sampai 3 tidak mengikutkan yang trakhir
 console.log(potonganangka);
 
 // array.splice([IndexMulai], [JumlahNilaiYangDihapus], [NilaiYangDitambahkan1], [NilaiYangDitambahkan2], ...);
@@ -95,15 +95,15 @@ console.log(arr);
 arr.splice(1, 5, "hobi"); //menambahkan data di index 1 dan menghapus 5 data
 console.log(arr);
 
-var arrsplit = "saya, ingin, belajar, bersama";
-var splitcoma = arrsplit.split(","); //mengubah string menjadi array dipisahkan coma
+let arrsplit = "saya, ingin, belajar, bersama";
+let splitcoma = arrsplit.split(","); //mengubah string menjadi array dipisahkan coma
 console.log(splitcoma);
 
-var arrsplittitikdua = "saya: ingin: belajar: bersama";
-var splittitikdua = arrsplittitikdua.split(":"); //mengubah string menjadi array dipisahkan titik dua
+let arrsplittitikdua = "saya: ingin: belajar: bersama";
+let splittitikdua = arrsplittitikdua.split(":"); //mengubah string menjadi array dipisahkan titik dua
 console.log(splittitikdua);
 
-var arrjoin= ["saya", "ingin", "belajar", "bersama"];
+let arrjoin= ["saya", "ingin", "belajar", "bersama"];
 var slug = arrjoin.join("-"); //mengubah array menjadi string dipisahkan -
 console.log(slug);
 var slug = arrjoin.join(" "); //mengubah array menjadi string dipisahkan spasi
