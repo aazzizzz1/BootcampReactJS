@@ -1,6 +1,6 @@
 import React from "react";
 
-const Tugas8 = (props, user) => {
+const Tugas8 = (props) => {
     return (
         <>
         <p> <b>Nama Aku adalah: </b>  {props.name} </p>
