@@ -4,8 +4,8 @@ import { useState } from 'react' // harus didalam bracket karena method
 const StateHooks = () => {
 const [name, setName] = useState("Aziz"); // bisa dipakai di component itu sendiri biasnya
 const [gender, setGender] = useState("Laki-laki");
-const [array, setArray] = useState(["hai", "cobain", "array"]);
-const [object, setObject] = useState({name:"Aziz", umur:19, pekerjaan:"developer"})
+const [array] = useState(["hai", "cobain", "array"]);
+const [object] = useState({name:"Aziz", umur:19, pekerjaan:"developer"})
 const [count, setCount] = useState(0);
 const [panggilan, setPanggilan] = useState("Pak");
 // name = "Aziz"; // tidak bisa akan error karena akan terus di render
@@ -20,7 +20,7 @@ const handleCount = () => {
   if (count < 10){
     setCount(count + 1);
   } else {
-    alert("Anda tidak bisa melebihi angka 10")
+    alert("Anda tidak bisa melebihi angka 10");
   }
 }
 
