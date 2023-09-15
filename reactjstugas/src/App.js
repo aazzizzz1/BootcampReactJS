@@ -10,14 +10,16 @@ import Sidebar from './Components/Tailwind/Sidebar';
 import Side from './Components/Tailwind/Side';
 import Pagin from './Components/Tailwind/Pagin';
 import SideFlow from './Components/Tailwind/SideFlow';
+import FlowSide from './Components/Sidebar/FlowSide';
 
 function App() {
   return (
     <>
+    <FlowSide/>
       {/* <Tugas7/> */}
       {/* <Sidebar/> */}
       {/* <Tailwind/> */}
-      <Side/>
+      {/* <Side/> */}
       {/* <SideFlow/> */}
       {/* <Tugas8 name="Aziz" adress="Banyuwangi" email="azizvbi33@gmail.com" user="azizvbi"/> */}
       {/* <Button/> */}
