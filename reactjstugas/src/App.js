@@ -4,12 +4,7 @@ import Tugas8 from './Components/ComponentsProps/ComponentProps';
 import './Style/style.css';
 import Button from './Components/ComponentsProps/Button';
 import StateHooks from './Components/StateHooks/Materi';
-import Tailwind from './Components/Tailwind/Tailwind';
-import Pagination from './Components/Tailwind/Pagination';
-import Sidebar from './Components/Tailwind/Sidebar';
-import Side from './Components/Tailwind/Side';
 import Pagin from './Components/Tailwind/Pagin';
-import SideFlow from './Components/Tailwind/SideFlow';
 import FlowSide from './Components/Sidebar/FlowSide';
 
 function App() {

@@ -1,4 +1,5 @@
 import React from 'react'
+import Table from '../Table/Table'
 
 const FlowSide = () => {
   return (
@@ -53,7 +54,7 @@ const FlowSide = () => {
                 <img
                   className="w-8 h-8 rounded-full"
                   src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                  alt="user photo"
+                  alt="useraaa"
                 />
               </button>
             </div>
@@ -78,7 +79,7 @@ const FlowSide = () => {
               <ul className="py-1" role="none">
                 <li>
                   <a
-                    href="#"
+                    href="a"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
@@ -87,7 +88,7 @@ const FlowSide = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="a"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
@@ -96,7 +97,7 @@ const FlowSide = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="a"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
@@ -105,7 +106,7 @@ const FlowSide = () => {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="a"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                     role="menuitem"
                   >
@@ -128,7 +129,7 @@ const FlowSide = () => {
       <ul className="space-y-2 font-medium">
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -146,7 +147,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -166,7 +167,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -186,7 +187,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -203,7 +204,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -220,7 +221,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -243,7 +244,7 @@ const FlowSide = () => {
         </li>
         <li>
           <a
-            href="#"
+            href="a"
             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
@@ -263,8 +264,13 @@ const FlowSide = () => {
       </ul>
     </div>
   </aside>
+
+    {/* Bukan Sidebar */}
+
   <div className="p-4 sm:ml-64">
-    <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <Table/>
+    {/* Side */}
+    {/* <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
           <p className="text-2xl text-gray-400 dark:text-gray-500">
@@ -518,7 +524,7 @@ const FlowSide = () => {
           </p>
         </div>
       </div>
-    </div>
+    </div> */}
   </div>
 </>
   )
