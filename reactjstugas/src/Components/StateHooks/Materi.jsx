@@ -29,13 +29,13 @@ const handleCount = () => {
     <br />
     {/* { panggilan === "aziz" ? <span>Pak</span> : <span>Buk</span>} */}
     <p>Panggilan saya : {panggilan}</p>
-    <p>Set nama aku adalah : {name}</p>
+    <p className="underline"> Set nama aku adalah : {name}</p>
     <p>Gender Aku : {gender}</p>
     <button onClick={handleName}>ganti nama</button>
     <p>{`aku adalah array : ${array}`}</p>
     <p>{`aku adalah array : ${object.name} ${object.pekerjaan}`}</p>
     <p>{`tambah angka : ${count}`} </p>
-    <button onClick={handleCount}>tambah</button>
+    <button className='m-2 p-2 rounded-full bg-cyan-500 hover:bg-cyan-600' onClick={handleCount}>tambah</button>
     </>
   )
 }
