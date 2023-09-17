@@ -21,5 +21,4 @@ const Pagin = () => {
     </>
   )
 }
-
 export default Pagin
