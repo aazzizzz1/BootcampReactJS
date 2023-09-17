@@ -14,7 +14,7 @@ function App() {
       {/* <Tugas7/> */}
       {/* <Sidebar/> */}
       {/* <Tailwind/> */}
-      <Side/>
+      {/* <Side/> */}
       {/* <SideFlow/> */}
       {/* <Tugas8 name="Aziz" adress="Banyuwangi" email="azizvbi33@gmail.com" user="azizvbi"/> */}
       {/* <Button/> */}
