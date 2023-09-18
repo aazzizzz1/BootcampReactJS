@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import CreateData from './FormCreateData';
+import CreatePopUp from '../Popup/CreatePopUp';
 
 const Table = () => {
 
@@ -80,8 +81,10 @@ return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
   <div className="flex items-center justify-between py-4 bg-white dark:bg-gray-800">
     <div className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-    <button onClick={togglePop}>Create Data</button>
-            {seen ? <CreateData toggle={togglePop} /> : null}
+    {/* <button onClick={togglePop}>Create Data</button>
+      {seen ? <CreateData toggle={togglePop} /> : null} */}
+      {/* <button>Create Data</button> */}
+      <CreatePopUp/>
     </div>
     <div>
       <button
