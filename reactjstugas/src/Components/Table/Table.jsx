@@ -1,30 +1,88 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import CreateData from './FormCreateData';
 
 const Table = () => {
 
+  const [seen, setSeen] = useState(false)
+
+    function togglePop () {
+        setSeen(!seen);
+    };
+
   // state data
   let [data, setData] = useState(null) //harus memakai state karena react akan merender parameter ini sialisasi terlebih dahulu, disarankan null agar enak pengkondisianya
+  //Fatch data TUGAS menggunakan Async Await 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(' https://backendexample.sanbercloud.com/api/student-scores');
+        let hasil = result.data; // Data API
+        setData([...hasil]); // assign data ke dalam method setData Bisa menggunakan SPREAD OPERATOR atau tidak
+        // console.log(result.data); // mengambil hanya datanya saja akan ada array of object dari API
+        // console.log(result); // menampilkan result dari API berupa object asli APInya
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  // method fetch data 
-  useEffect(()=>{
-    axios.get('https://backendexample.sanbercloud.com/api/contestants')
-    .then((result)=>{
-      let hasil = result.data //Data API
-      setData(hasil) //assign data kedalam method setData
-      // console.log(result.data); // menganmbil hanya datanya saja akan ada array of object dari API
-      // console.log(result); // menampilkan result dari API berupa object asli APInya
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }, [])
+    fetchData();
+  }, []);
 
+  // //Fatch data menggunakan Async Await
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.get('https://backendexample.sanbercloud.com/api/contestants');
+  //       let hasil = result.data; // Data API
+  //       setData([...hasil]); // assign data ke dalam method setData Bisa menggunakan SPREAD OPERATOR atau tidak
+  //       // console.log(result.data); // mengambil hanya datanya saja akan ada array of object dari API
+  //       // console.log(result); // menampilkan result dari API berupa object asli APInya
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  let handleNilai = (nilai) => {
+    if (nilai >= 80) {
+      return "A";
+    } else if (nilai >= 70 && nilai < 80) {
+      return "B";
+    } else if (nilai >= 60 && nilai < 70) {
+      return "C";
+    } else if (nilai >= 50 && nilai < 60) {
+      return "D";
+    } else {
+      return "E";
+    }
+  }
+
+  // // method fetch data then catch
+  // useEffect(()=>{
+  //   axios.get('https://backendexample.sanbercloud.com/api/contestants')
+  //   .then((result)=>{
+  //     let hasil = result.data //Data API
+  //     setData(hasil) //assign data kedalam method setData
+  //     // console.log(result.data); // menganmbil hanya datanya saja akan ada array of object dari API
+  //     // console.log(result); // menampilkan result dari API berupa object asli APInya
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err)
+  //   })
+  // }, [])
+  
   console.log(data) // menampilkan data yang sudah di assign kedalam setData
 
-  return (
+return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
   <div className="flex items-center justify-between py-4 bg-white dark:bg-gray-800">
+    <div className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+    <button onClick={togglePop}>Create Data</button>
+            {seen ? <CreateData toggle={togglePop} /> : null}
+    </div>
     <div>
       <button
         id="dropdownActionButton"
@@ -143,7 +201,10 @@ const Table = () => {
           Name
         </th>
         <th scope="col" className="px-6 py-3">
-          Position
+          Nilai
+        </th>
+        <th scope="col" className="px-6 py-3">
+          Hasil
         </th>
         <th scope="col" className="px-6 py-3">
           Status
@@ -187,7 +248,8 @@ const Table = () => {
                 <div className="font-normal text-gray-500">bonnie@flowbite.com</div>
               </div>
             </th>
-            <td className="px-6 py-4">Designer</td>
+            <td className="px-6 py-4">{`${element.score}`}</td>
+            <td className="px-6 py-4">{handleNilai(element.score)}</td>
             <td className="px-6 py-4">
               <div className="flex items-center">
                 <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
@@ -196,68 +258,10 @@ const Table = () => {
             </td>
             <td className="px-6 py-4">
               {/* Modal toggle */}
-              <a
-                href="#"
-                type="button"
-                data-modal-show="editUserModal"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
+              <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                 Edit user
               </a>
-                        <a
-                href="del"
-                type="button"
-                className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
-              >
-                Delete user
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="w-4 p-4">
-              <div className="flex items-center">
-                <input
-                  id="checkbox-table-search-2"
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label htmlFor="checkbox-table-search-2" className="sr-only">
-                  checkbox
-                </label>
-              </div>
-            </td>
-            <th
-              scope="row"
-              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              <img
-                className="w-10 h-10 rounded-full"
-                src="/docs/images/people/profile-picture-2.jpg"
-                alt="Jese "
-              />
-              <div className="pl-3">
-                <div className="text-base font-semibold">Jese Leos</div>
-                <div className="font-normal text-gray-500">jese@flowbite.com</div>
-              </div>
-            </th>
-            <td className="px-6 py-4">Vue JS Developer</td>
-            <td className="px-6 py-4">
-              <div className="flex items-center">
-                <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2" />{" "}
-                Online
-              </div>
-            </td>
-            <td className="px-6 py-4">
-              {/* Modal toggle */}
               <a
-                href="#"
-                type="button"
-                data-modal-show="editUserModal"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit user
-              </a>
-                        <a
                 href="del"
                 type="button"
                 className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
@@ -271,192 +275,6 @@ const Table = () => {
       )
     })}
   </table>
-  {/* Edit user modal */}
-  <div
-    id="editUserModal"
-    tabIndex={-1}
-    aria-hidden="true"
-    className="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  >
-    <div className="relative w-full max-w-2xl max-h-full">
-      {/* Modal content */}
-      <form
-        action="#"
-        className="relative bg-white rounded-lg shadow dark:bg-gray-700"
-      >
-        {/* Modal header */}
-        <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            Edit user
-          </h3>
-          <button
-            type="button"
-            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            data-modal-hide="editUserModal"
-          >
-            <svg
-              className="w-3 h-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
-            <span className="sr-only">Close modal</span>
-          </button>
-        </div>
-        {/* Modal body */}
-        <div className="p-6 space-y-6">
-          <div className="grid grid-cols-6 gap-6">
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="first-name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Bonnie"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="last-name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="last-name"
-                id="last-name"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Green"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="example@company.com"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="phone-number"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Phone Number
-              </label>
-              <input
-                type="number"
-                name="phone-number"
-                id="phone-number"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="e.g. +(12)3456 789"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="department"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Department
-              </label>
-              <input
-                type="text"
-                name="department"
-                id="department"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Development"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="company"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Company
-              </label>
-              <input
-                type="number"
-                name="company"
-                id="company"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder={123456}
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="current-password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Current Password
-              </label>
-              <input
-                type="password"
-                name="current-password"
-                id="current-password"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="••••••••"
-                required=""
-              />
-            </div>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="new-password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                New Password
-              </label>
-              <input
-                type="password"
-                name="new-password"
-                id="new-password"
-                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="••••••••"
-                required=""
-              />
-            </div>
-          </div>
-        </div>
-        {/* Modal footer */}
-        <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Save all
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 </div>
   )
 }
