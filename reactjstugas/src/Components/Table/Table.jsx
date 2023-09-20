@@ -1,11 +1,82 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import CreateData from './FormCreateData';
-import CreatePopUp from '../Popup/CreatePopUp';
 
 const Table = () => {
 
   const [seen, setSeen] = useState(false)
+  const [input, setInput] = useState({
+    name: "",
+    course: "",
+    score: 0,
+  })
+  const [fetchStatus, setfetchStatus] = useState(true)
+
+  const handleInput = (events) => {
+    let value = events.target.value
+    let name = events.target.name
+
+    // console.log(`${name}, ${score}, ${course}, ${value}`)
+
+    if(name === "name"){
+      setInput({...input,
+        name : value,
+      })
+    } else if ( name === "course"){
+      setInput({...input,
+        course : value,
+      })
+    } else if ( name === "score"){
+      setInput({...input,
+        score : value,
+      })
+    }
+  }
+
+  const handleSubmit = (events) => {
+    events.preventDefault();
+
+    const { name, course, score } = input;
+      axios
+        .post('https://backendexample.sanbercloud.com/api/student-scores', {
+          name,
+          course,
+          score,
+        })
+        .then((result) => {
+          console.log(result);
+          setfetchStatus(true);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+
+      setInput({
+        name: '',
+        course: '',
+        score: 0,
+      });
+    }
+
+  // Fungsi untuk menampilkan modal edit dengan data yang akan diedit
+  const openEditModal = (e, userId) => {
+    e.preventDefault();
+    axios
+      .get(`https://backendexample.sanbercloud.com/api/student-scores/${userId}`)
+      .then((res) => {
+        const reslutedit = res.data;
+        console.log(reslutedit);
+        // Mengisi data yang akan diedit dan mengaktifkan mode edit
+        setInput({
+          name: reslutedit.name,
+          course: reslutedit.course,
+          score: reslutedit.score,
+        });
+        togglePop();
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
     function togglePop () {
         setSeen(!seen);
@@ -15,9 +86,10 @@ const Table = () => {
   let [data, setData] = useState(null) //harus memakai state karena react akan merender parameter ini sialisasi terlebih dahulu, disarankan null agar enak pengkondisianya
   //Fatch data TUGAS menggunakan Async Await 
   useEffect(() => {
-    const fetchData = async () => {
+    if( fetchStatus === true){
+      const fetchData = async () => {
       try {
-        const result = await axios.get(' https://backendexample.sanbercloud.com/api/student-scores');
+        const result = await axios.get('https://backendexample.sanbercloud.com/api/student-scores');
         let hasil = result.data; // Data API
         setData([...hasil]); // assign data ke dalam method setData Bisa menggunakan SPREAD OPERATOR atau tidak
         // console.log(result.data); // mengambil hanya datanya saja akan ada array of object dari API
@@ -26,26 +98,27 @@ const Table = () => {
         console.log(err);
       }
     };
-
     fetchData();
-  }, []);
+    setfetchStatus(false)
+    }
+    
+  }, [fetchStatus, setfetchStatus]);
 
-  // //Fatch data menggunakan Async Await
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.get('https://backendexample.sanbercloud.com/api/contestants');
-  //       let hasil = result.data; // Data API
-  //       setData([...hasil]); // assign data ke dalam method setData Bisa menggunakan SPREAD OPERATOR atau tidak
-  //       // console.log(result.data); // mengambil hanya datanya saja akan ada array of object dari API
-  //       // console.log(result); // menampilkan result dari API berupa object asli APInya
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+// method fetch data then catch
+  // useEffect(()=>{
+  //   axios.get('https://backendexample.sanbercloud.com/api/contestants')
+  //   .then((result)=>{
+  //     let hasil = result.data //Data API
+  //     setData(hasil) //assign data kedalam method setData
+  //     // console.log(result.data); // menganmbil hanya datanya saja akan ada array of object dari API
+  //     // console.log(result); // menampilkan result dari API berupa object asli APInya
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err)
+  //   })
+  // }, [])
+  
+  // console.log(data) // menampilkan data yang sudah di assign kedalam setData
 
   let handleNilai = (nilai) => {
     if (nilai >= 80) {
@@ -61,21 +134,36 @@ const Table = () => {
     }
   }
 
-  // // method fetch data then catch
-  // useEffect(()=>{
-  //   axios.get('https://backendexample.sanbercloud.com/api/contestants')
-  //   .then((result)=>{
-  //     let hasil = result.data //Data API
-  //     setData(hasil) //assign data kedalam method setData
-  //     // console.log(result.data); // menganmbil hanya datanya saja akan ada array of object dari API
-  //     // console.log(result); // menampilkan result dari API berupa object asli APInya
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-  // }, [])
+  let handleDelete = (e, userId) => {
+    e.preventDefault();
+    axios
+      .delete(`https://backendexample.sanbercloud.com/api/student-scores/${userId}`)
+      .then((result) => {
+        // console.log(result)
+        setfetchStatus(true);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  let handleEdit = (e, userId) => {
+    e.preventDefault();
+    axios.get(`https://backendexample.sanbercloud.com/api/student-scores/${userId}`)
+    .then((res)=>{
+      let reslutedit = res.data
+      console.log(reslutedit)
+      setInput({
+        name: input.name,
+        course : input.course,
+        score : input.score
+      })
+    })
+    .catch((err)=>{
+      alert(err)
+    })
+  }
   
-  console.log(data) // menampilkan data yang sudah di assign kedalam setData
 
 return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
@@ -269,16 +357,22 @@ return (
             </td>
             <td className="px-6 py-4">
               {/* Modal toggle */}
-              <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+              <a
+                href="#"
+                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                onClick={(e) => openEditModal(e, element.id)}
+                data-user-id={element.id}
+              >
                 Edit user
               </a>
               <a
-                href="del"
-                type="button"
-                className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
+              href="#"
+              className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
+              onClick={(e) => handleDelete(e, element.id)}
+              data-user-id={element.id}
               >
-                Delete user
-              </a>
+              Delete user
+            </a>
             </td>
           </tr>
         </tbody>
@@ -286,13 +380,13 @@ return (
       )
     })}
   </table>
-    {/* Main modal */}
-    <div
+    {/* Main modal Create Data */}
+  <div
     id="createdata-modal"
     tabIndex={-1}
     aria-hidden="true"
     className="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  >
+    >
     <div className="relative w-full max-w-md max-h-full">
       {/* Modal content */}
       <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -322,79 +416,70 @@ return (
           <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             Create Data
           </h3>
-          <form className="space-y-6" action="#">
+          <form className="space-y-6" action="#" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor="email"
+                htmlFor="text"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Your email
+                Nama Kamu
               </label>
               <input
-                type="email"
-                name="email"
-                id="email"
+                onChange={handleInput}
+                type="text"
+                name="name"
+                id="name"
+                value={input.name}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                placeholder="name@company.com"
+                placeholder="Abdul Aziz"
                 required=""
               />
             </div>
+            {/* {input.name} melihat inputan */}
             <div>
               <label
-                htmlFor="password"
+                htmlFor="text"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Your password
+                Course
               </label>
               <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="••••••••"
+                onChange={handleInput}
+                type="text"
+                name="course"
+                id="course"
+                value={input.course}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                placeholder="Biologi"
+                required=""
+              />
+            </div>
+            {/* {input.course} melihat inputan */}
+            <div>
+              <label
+                htmlFor="number"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Masukan Nilai
+              </label>
+              <input
+                onChange={handleInput}
+                value={input.score}
+                type="number"
+                name="score"
+                id="score"
+                placeholder="0"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 required=""
               />
             </div>
-            <div className="flex justify-between">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="remember"
-                    type="checkbox"
-                    defaultValue=""
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                    required=""
-                  />
-                </div>
-                <label
-                  htmlFor="remember"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Remember me
-                </label>
-              </div>
-              <a
-                href="#"
-                className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-              >
-                Lost Password?
-              </a>
-            </div>
+            {/* {input.score} melihat inputan */}
             <button
               type="submit"
               className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Login to your account
+              Create Data
             </button>
-            <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?{" "}
-              <a
-                href="#"
-                className="text-blue-700 hover:underline dark:text-blue-500"
-              >
-                Create account
-              </a>
-            </div>
           </form>
         </div>
       </div>
