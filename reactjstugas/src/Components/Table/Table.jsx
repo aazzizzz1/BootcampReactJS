@@ -2,14 +2,18 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
 const Table = () => {
-
-  const [seen, setSeen] = useState(false)
+  //State
   const [input, setInput] = useState({
     name: "",
     course: "",
     score: 0,
   })
   const [fetchStatus, setfetchStatus] = useState(true)
+  // state data
+  let [data, setData] = useState(null) //harus memakai state karena react akan merender parameter ini sialisasi terlebih dahulu, disarankan null agar enak pengkondisianya
+  // Menginputkan Data kedalam form
+  const [curretID, setcurrentID] = useState(-1)
+
 
   const handleInput = (events) => {
     let value = events.target.value
@@ -32,59 +36,7 @@ const Table = () => {
     }
   }
 
-  const handleSubmit = (events) => {
-    events.preventDefault();
-
-    const { name, course, score } = input;
-      axios
-        .post('https://backendexample.sanbercloud.com/api/student-scores', {
-          name,
-          course,
-          score,
-        })
-        .then((result) => {
-          console.log(result);
-          setfetchStatus(true);
-        })
-        .catch((error) => {
-          alert(error);
-        });
-
-      setInput({
-        name: '',
-        course: '',
-        score: 0,
-      });
-    }
-
-  // Fungsi untuk menampilkan modal edit dengan data yang akan diedit
-  const openEditModal = (e, userId) => {
-    e.preventDefault();
-    axios
-      .get(`https://backendexample.sanbercloud.com/api/student-scores/${userId}`)
-      .then((res) => {
-        const reslutedit = res.data;
-        console.log(reslutedit);
-        // Mengisi data yang akan diedit dan mengaktifkan mode edit
-        setInput({
-          name: reslutedit.name,
-          course: reslutedit.course,
-          score: reslutedit.score,
-        });
-        togglePop();
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
-
-    function togglePop () {
-        setSeen(!seen);
-    };
-
-  // state data
-  let [data, setData] = useState(null) //harus memakai state karena react akan merender parameter ini sialisasi terlebih dahulu, disarankan null agar enak pengkondisianya
-  //Fatch data TUGAS menggunakan Async Await 
+  //Fetch Data menggunakan Async dan Await 
   useEffect(() => {
     if( fetchStatus === true){
       const fetchData = async () => {
@@ -120,6 +72,7 @@ const Table = () => {
   
   // console.log(data) // menampilkan data yang sudah di assign kedalam setData
 
+  //Method Mengganti Nilai
   let handleNilai = (nilai) => {
     if (nilai >= 80) {
       return "A";
@@ -134,6 +87,51 @@ const Table = () => {
     }
   }
 
+  // Submit Form Create
+  const handleSubmit = (events) => {
+    events.preventDefault();
+
+    const { name, course, score } = input;
+    if (curretID === -1) {
+      axios
+        .post('https://backendexample.sanbercloud.com/api/student-scores', {
+          name,
+          course,
+          score,
+        })
+        .then((result) => {
+          console.log(result);
+          setfetchStatus(true);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    } else {
+      axios.put(`https://backendexample.sanbercloud.com/api/student-scores/${curretID}`, {
+        name,
+        course,
+        score,
+      })
+      .then((result) => {
+        console.log(result);
+        setfetchStatus(true);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    }
+    //balikan lagi agar tidak bug agar bisa create data
+    setcurrentID(-1)
+
+    //balikin input ke deafault
+      setInput({
+        name: '',
+        course: '',
+        score: 0,
+      });
+    }
+
+  //Delete Data by ID
   let handleDelete = (e, userId) => {
     e.preventDefault();
     axios
@@ -147,16 +145,19 @@ const Table = () => {
       });
   };
 
+  //Menampilkan Data Kedalam Form
   let handleEdit = (e, userId) => {
+    setcurrentID(userId)
+
     e.preventDefault();
     axios.get(`https://backendexample.sanbercloud.com/api/student-scores/${userId}`)
     .then((res)=>{
       let reslutedit = res.data
-      console.log(reslutedit)
+      // console.log(reslutedit)
       setInput({
-        name: input.name,
-        course : input.course,
-        score : input.score
+        name: reslutedit.name,
+        course : reslutedit.course,
+        score : reslutedit.score
       })
     })
     .catch((err)=>{
@@ -164,7 +165,6 @@ const Table = () => {
     })
   }
   
-
 return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">
   <div className="flex items-center justify-between py-4 bg-white dark:bg-gray-800">
@@ -315,7 +315,19 @@ return (
     </thead>
     {/* Body Tabel */}
     {/* Fetch Data */}
-    {data == null && <p>Loading Data...</p>}
+    {data == null && 
+      <div>
+        {/* Spinner jika data null dan loading */}
+          <div>
+              <div role="status">
+                  <svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                      <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                  </svg>
+                  <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+      </div>}
     {data !== null && data.map((element)=>{
       return (
         <>
@@ -360,8 +372,11 @@ return (
               <a
                 href="#"
                 className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                onClick={(e) => openEditModal(e, element.id)}
+                onClick={(e) => handleEdit(e, element.id)}
                 data-user-id={element.id}
+                //Untuk membuat modal keluar atau tampil
+                data-modal-target="createdata-modal"
+                data-modal-toggle="createdata-modal"
               >
                 Edit user
               </a>
