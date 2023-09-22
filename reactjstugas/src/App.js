@@ -6,11 +6,15 @@ import Button from './Components/ComponentsProps/Button';
 import StateHooks from './Components/StateHooks/Materi';
 import Pagin from './Components/Tailwind/Pagin';
 import FlowSide from './Components/Sidebar/FlowSide';
+import SignIn from './Components/Auth/SignIn';
+import SignUp from './Components/Auth/SignUp';
 
 function App() {
   return (
     <>
-    <FlowSide/>
+    <SignIn/>
+    {/* <SignUp/> */}
+    {/* <FlowSide/> */}
       {/* <Tugas7/> */}
       {/* <Sidebar/> */}
       {/* <Tailwind/> */}
