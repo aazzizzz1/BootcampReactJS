@@ -1,174 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "../Spinner/Spinner";
+import { GlobalContext } from "../StateManagement/GlobalContext";
 
 const Table = () => {
-  //State
-  const [input, setInput] = useState({
-    name: "",
-    course: "",
-    score: 0,
-  });
-  const [fetchStatus, setfetchStatus] = useState(true);
-  // state data
-  let [data, setData] = useState(null); //harus memakai state karena react akan merender parameter ini sialisasi terlebih dahulu, disarankan null agar enak pengkondisianya
-  // Menginputkan Data kedalam form
-  const [curretID, setcurrentID] = useState(-1);
+  //Memanggil state dari GlobalContext dan dari destructuring dibawah ini
+  const { state, handleFunction } = useContext(GlobalContext)
 
-  const handleInput = (events) => {
-    let value = events.target.value;
-    let name = events.target.name;
+  //Membuat destructuring dari Global Context
+  const {
+    input, setInput,
+    fetchStatus, setfetchStatus,
+    data, setData,
+    curretID, setcurrentID
+    } = state
 
-    // console.log(`${name}, ${score}, ${course}, ${value}`)
-
-    if (name === "name") {
-      setInput({ ...input, name: value });
-    } else if (name === "course") {
-      setInput({ ...input, course: value });
-    } else if (name === "score") {
-      setInput({ ...input, score: value });
-    }
-  };
+  const {
+    fetchData,
+    handleInput,
+    handleNilai,
+    handleSubmit,
+    handleDelete,
+    handleEdit,
+    } = handleFunction
 
   //Fetch Data menggunakan Async dan Await
   useEffect(() => {
     if (fetchStatus === true) {
-      const fetchData = async () => {
-        try {
-          const result = await axios.get(
-            "https://backendexample.sanbercloud.com/api/student-scores"
-          );
-          let hasil = result.data; // Data API
-          setData([...hasil]); // assign data ke dalam method setData Bisa menggunakan SPREAD OPERATOR atau tidak
-          // console.log(result.data); // mengambil hanya datanya saja akan ada array of object dari API
-          // console.log(result); // menampilkan result dari API berupa object asli APInya
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      fetchData();
-      setfetchStatus(false);
+      fetchData()
     }
   }, [fetchStatus, setfetchStatus]);
-
-  // method fetch data then catch
-  // useEffect(()=>{
-  //   axios.get('https://backendexample.sanbercloud.com/api/contestants')
-  //   .then((result)=>{
-  //     let hasil = result.data //Data API
-  //     setData(hasil) //assign data kedalam method setData
-  //     // console.log(result.data); // menganmbil hanya datanya saja akan ada array of object dari API
-  //     // console.log(result); // menampilkan result dari API berupa object asli APInya
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-  // }, [])
-
-  // console.log(data) // menampilkan data yang sudah di assign kedalam setData
-
-  //Method Mengganti Nilai
-  let handleNilai = (nilai) => {
-    if (nilai >= 80) {
-      return "A";
-    } else if (nilai >= 70 && nilai < 80) {
-      return "B";
-    } else if (nilai >= 60 && nilai < 70) {
-      return "C";
-    } else if (nilai >= 50 && nilai < 60) {
-      return "D";
-    } else {
-      return "E";
-    }
-  };
-
-  // Submit Form Create
-  const handleSubmit = (events) => {
-    events.preventDefault();
-
-    const { name, course, score } = input;
-    if (curretID === -1) {
-      axios
-        .post("https://backendexample.sanbercloud.com/api/student-scores", {
-          name,
-          course,
-          score,
-        })
-        .then((result) => {
-          console.log(result);
-          setfetchStatus(true);
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    } else {
-      axios
-        .put(
-          `https://backendexample.sanbercloud.com/api/student-scores/${curretID}`,
-          {
-            name,
-            course,
-            score,
-          }
-        )
-        .then((result) => {
-          console.log(result);
-          setfetchStatus(true);
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-
-    //balikan lagi agar tidak bug agar bisa create data
-    setcurrentID(-1);
-
-    //balikin input ke deafault
-    setInput({
-      name: "",
-      course: "",
-      score: 0,
-    });
-  };
-
-  //Delete Data by ID
-  let handleDelete = (e, userId) => {
-    e.preventDefault();
-    axios
-      .delete(
-        `https://backendexample.sanbercloud.com/api/student-scores/${userId}`
-      )
-      .then((result) => {
-        // console.log(result)
-        setfetchStatus(true);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
-  //Menampilkan Data Kedalam Form
-  let handleEdit = (e, userId) => {
-    setcurrentID(userId);
-
-    e.preventDefault();
-    axios
-      .get(
-        `https://backendexample.sanbercloud.com/api/student-scores/${userId}`
-      )
-      .then((res) => {
-        let reslutedit = res.data;
-        // console.log(reslutedit)
-        setInput({
-          name: reslutedit.name,
-          course: reslutedit.course,
-          score: reslutedit.score,
-        });
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10">

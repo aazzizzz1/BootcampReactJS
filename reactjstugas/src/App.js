@@ -8,13 +8,15 @@ import Pagin from './Components/Tailwind/Pagin';
 import FlowSide from './Components/Sidebar/FlowSide';
 import SignIn from './Components/Auth/SignIn';
 import SignUp from './Components/Auth/SignUp';
+import { GlobalProvider } from './Components/StateManagement/GlobalContext';
 
 function App() {
   return (
     <>
-    {/* <SignIn/> */}
-    {/* <SignUp/> */}
-    <FlowSide/>
+    <GlobalProvider>
+      {/* <SignIn/> */}
+      {/* <SignUp/> */}
+      <FlowSide/>
       {/* <Tugas7/> */}
       {/* <Sidebar/> */}
       {/* <Tailwind/> */}
@@ -25,6 +27,7 @@ function App() {
       {/* <StateHooks/> */}
       {/* <Pagin/> */}
       {/* <Pagination/> */}
+    </GlobalProvider>
     </>
   );
 }
