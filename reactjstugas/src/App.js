@@ -12,9 +12,9 @@ import SignUp from './Components/Auth/SignUp';
 function App() {
   return (
     <>
-    <SignIn/>
+    {/* <SignIn/> */}
     {/* <SignUp/> */}
-    {/* <FlowSide/> */}
+    <FlowSide/>
       {/* <Tugas7/> */}
       {/* <Sidebar/> */}
       {/* <Tailwind/> */}
